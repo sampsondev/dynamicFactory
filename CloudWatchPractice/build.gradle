@@ -12,3 +12,39 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+
+task buildVersions ( ) {
+    //extra properties
+    buildVersions.ext.theString = ''
+    buildVersions.ext.avariable = ''
+
+    doLast {
+        File fileOut = new File('.', 'file.txt')
+        fileOut << 'a heading\n'
+        def theArray = [
+                'baa'        : 'a'
+                , 'bar'      : 'a'
+                , 'b*.jar'   : 'a'
+                , 'bent*.war': 'a'
+                , 'b'        : 'a'
+        ]
+        theArray.eachWithIndex { entry, i ->
+            i = i + 1
+            println "1it $entry.key"
+            avariable = entry.key
+            ByteArrayOutputStream outputstream = new ByteArrayOutputStream()
+            exec {
+                args './someShellScript.sh'
+                args "argument1"
+                args "argument2"
+                standardOutput = outputstream
+                commandLine args
+            }
+            theString = outputstream.toString()
+            def slurper = new groovy.json.JsonSlurper();
+            def dependency = slurper.parseText(theString)
+        }
+    }
+
+}
